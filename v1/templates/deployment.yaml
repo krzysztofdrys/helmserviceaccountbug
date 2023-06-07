@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: serviceaccountbug-deployment
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: serviceaccountbug
+  template:
+    metadata:
+      labels:
+        app: serviceaccountbug
+    spec:
+      serviceAccountName: serviceaccountbug-service-account
+      automountServiceAccountToken: false
+      containers:
+        - name: busybox
+          image: busybox
+          command:
+            - /bin/sh
+            - -c
+            - sleep 3600
